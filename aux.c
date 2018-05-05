@@ -1,5 +1,14 @@
 #include"aux.h"
 
+void clearTab(Ponto tab[7][7]){ // Limpa o tabuleiro
+   for(int i=0; i<7; i++){
+      for(int j=0; j<7; j++){
+         tab[i][j].right = 0;
+         tab[i][j].down = 0;
+      }
+   }
+}
+
 void move(int *i, int *j, Direcao dir){ // Calcula ponto após movimento em uma direção
    switch(dir){
       case DIR_CIMA:  // Para cima
