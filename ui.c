@@ -35,20 +35,20 @@ void _printSeg(Ponto p, Direcao dir){
    }
 }
 
-void printTabBasic(Ponto tab[7][7]){
+void printTabBasic(Tabuleiro tab){
    setlocale(LC_ALL, "");
 
    for(int i=0; i<7; i++){
       for(int j=0; j<7; j++){
          printf("%lc", (wint_t) simboloPonto);
          if(j!=6){
-            _printSeg(tab[i][j], DIR_DIR);
+            _printSeg(tab.tab[i][j], DIR_DIR);
          }
       }
       printf("\n");
       if(i!=6){
          for(int j=0; j<7; j++){
-            _printSeg(tab[i][j], DIR_BAIXO);
+            _printSeg(tab.tab[i][j], DIR_BAIXO);
             if(j!=6){
                printf("  ");
             }

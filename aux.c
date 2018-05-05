@@ -1,10 +1,10 @@
 #include"aux.h"
 
-void clearTab(Ponto tab[7][7]){ // Limpa o tabuleiro
+void clearTab(Tabuleiro tab){ // Limpa o tabuleiro
    for(int i=0; i<7; i++){
       for(int j=0; j<7; j++){
-         tab[i][j].right = 0;
-         tab[i][j].down = 0;
+         tab.tab[i][j].right = 0;
+         tab.tab[i][j].down = 0;
       }
    }
 }
@@ -30,10 +30,10 @@ int checkBorder(int i, int j){   // Checa se coordenada está dentro do tabuleir
    return (0 <= i && i < 7) && (0 <= j && j < 7);
 }
 
-int checkPointIsClear(Ponto tab[7][7], int i, int j){ // Checa se a direção não tem obstrução
+int checkPointIsClear(Tabuleiro tab, int i, int j){ // Checa se a direção não tem obstrução
    int di, dj;
 
-   if(tab[i][j].right){
+   if(tab.tab[i][j].right){
       di = i;
       dj = j;
       move(&di, &dj, DIR_DIR);
@@ -41,7 +41,7 @@ int checkPointIsClear(Ponto tab[7][7], int i, int j){ // Checa se a direção n�
          return 0;
       }
    }
-   if(tab[i][j].down){
+   if(tab.tab[i][j].down){
       di = i;
       dj = j;
       move(&di, &dj, DIR_BAIXO);
@@ -54,7 +54,7 @@ int checkPointIsClear(Ponto tab[7][7], int i, int j){ // Checa se a direção n�
    dj = j;
    move(&di, &dj, DIR_CIMA);
    if(checkBorder(di,dj)){
-      if(tab[di][dj].down){
+      if(tab.tab[di][dj].down){
          return 0;
       }
    }
@@ -63,7 +63,7 @@ int checkPointIsClear(Ponto tab[7][7], int i, int j){ // Checa se a direção n�
    dj = j;
    move(&di, &dj, DIR_ESQ);
    if(checkBorder(di,dj)){
-      if(tab[di][dj].right){
+      if(tab.tab[di][dj].right){
          return 0;
       }
    }

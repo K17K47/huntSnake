@@ -3,6 +3,6 @@
 
 #include"aux.h"
 
-void printTabBasic(Ponto tab[7][7]); // Imprime tabuleiro
+void printTabBasic(Tabuleiro tab); // Imprime tabuleiro
 
 #endif
