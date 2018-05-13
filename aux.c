@@ -1,12 +1,18 @@
 #include"aux.h"
 
-void clearTab(Tabuleiro tab){ // Limpa o tabuleiro
+void clearTab(Tabuleiro *tab){ // Limpa o tabuleiro
    for(int i=0; i<7; i++){
       for(int j=0; j<7; j++){
-         tab.tab[i][j].right = 0;
-         tab.tab[i][j].down = 0;
+         tab->tab[i][j].right = 0;
+         tab->tab[i][j].down = 0;
       }
    }
+
+   tab->iA = 0;
+   tab->jA = 0;
+
+   tab->iB = 0;
+   tab->jB = 0;
 }
 
 void move(int *i, int *j, Direcao dir){ // Calcula ponto após movimento em uma direção

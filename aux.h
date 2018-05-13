@@ -1,5 +1,5 @@
-#define _AUX_H
 #ifndef _AUX_H
+#define _AUX_H
 
 typedef enum _EDir{
    DIR_CIMA,
@@ -19,7 +19,7 @@ typedef struct _STabuleiro{
    int iB, jB;
 } Tabuleiro;
 
-void clearTab(Tabuleiro tab); // Limpa o tabuleiro
+void clearTab(Tabuleiro *tab); // Limpa o tabuleiro
 void move(int *i, int *j, Direcao dir); // Calcula ponto após movimento em uma direção
 int checkBorder(int i, int j); // Checa se coordenada está dentro do tabuleiro
 int checkPointIsClear(Tabuleiro tab, int i, int j); // Checa se o ponto não tem obstrução/já foi navegado
