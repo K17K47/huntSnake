@@ -37,6 +37,7 @@ int main(){
          scanf("%d", &dir);
 
          jogada(&tab, 0, jogador*1+(!jogador)*2, dir);
+         tab.nJogadas++;
 
          jogador = !jogador;
       }while(!jogoTerminado(tab));
