@@ -1,7 +1,7 @@
 #include"logic.h"
 #include"aux.h"
 
-void jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
+int jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
    int i,j;
 
    if(!ponta){ // Ponta A
@@ -10,6 +10,15 @@ void jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
    }else{ // Ponta B
       i = tab->iB;
       j = tab->jB;
+   }
+
+   int k, l;
+   k = i;
+   l = j;
+   move(&k, &l, dir);
+
+   if(!checkPointIsClear(*tab, k, l)){
+      return 0;
    }
 
    if((dir == DIR_BAIXO)||(dir == DIR_DIR)){
@@ -34,6 +43,7 @@ void jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
       tab->iB = i;
       tab->jB = j;
    }
+   return 1;
 }
 
 int jogoTerminado(Tabuleiro tab){

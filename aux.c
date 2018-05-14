@@ -14,7 +14,7 @@ void clearTab(Tabuleiro *tab){ // Limpa o tabuleiro
    tab->iB = 0;
    tab->jB = 0;
 
-   nJogadas = 0;
+   tab->nJogadas = 0;
 }
 
 void move(int *i, int *j, Direcao dir){ // Calcula ponto após movimento em uma direção
@@ -40,6 +40,10 @@ int checkBorder(int i, int j){   // Checa se coordenada está dentro do tabuleir
 
 int checkPointIsClear(Tabuleiro tab, int i, int j){ // Checa se a direção não tem obstrução
    int di, dj;
+
+   if(!checkBorder(i,j)){
+      return 0;
+   }
 
    if(tab.tab[i][j].right){
       di = i;
