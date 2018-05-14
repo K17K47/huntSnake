@@ -61,3 +61,7 @@ int jogoTerminado(Tabuleiro tab){
 
    return 1;
 }
+
+int pontos(Tabuleiro tab){
+   return tab.nJogadas;
+}
