@@ -93,7 +93,7 @@ void printTabLetras(Tabuleiro tab){
 
 typedef struct _SFB{
 	unsigned int height, width;
-	char* buffer;
+	wint_t* buffer;
 }Framebuffer;
 
 void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
