@@ -57,3 +57,43 @@ void printTabBasic(Tabuleiro tab){
       }
    }
 }
+
+	void VizinLivre( vetor, i, j);
+		for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
+			int k,l;
+			k = i;
+			j = l;
+			move(&k,&l,dir);
+			vetor[dir] = checkPointIsClear(tab,k,l);
+		}
+	void letras(Tabuleiro){
+		VizinLivre(int vetorLivre1[4], Tabuleiro.iA, Tabuleiro.jA);
+		VizinLivre(int vetorLivre2[4], Tabuleiro.iB, Tabuleiro.jB);
+		char vizinLetrado1[4],vizinLetrado2[4]
+		for( int k = 0; k<4; k++){
+			if(vetorLivre1[k]==1){
+				char letras1[4]={'a','b','c','d'};
+				vizinLetrado1[k]=letras1[k];
+			}
+			else{
+				vizinLetrado1[k]= ' ';
+			}
+			if(vetorLivre2[k]==1){
+				char letras2[4]={'e','f','g','h'};
+				vizinLetrado2[k]=letras2[k];
+			}
+			else{
+				vizinLetrado2[k]= ' ';
+			}
+		}
+	}
+void printTabLetras(Tabuleiro tab){
+	sprintf(printTabBasic,
+}
+
+typedef struct _SFB{
+	unsigned int height, widht;
+	char* burffer;
+}Framebuffer;
+
+voi initFramebuffer(Framebuffer* fb, int h, int w)
