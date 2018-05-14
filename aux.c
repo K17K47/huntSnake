@@ -13,6 +13,8 @@ void clearTab(Tabuleiro *tab){ // Limpa o tabuleiro
 
    tab->iB = 0;
    tab->jB = 0;
+
+   nJogadas = 0;
 }
 
 void move(int *i, int *j, Direcao dir){ // Calcula ponto após movimento em uma direção

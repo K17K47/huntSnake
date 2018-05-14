@@ -17,6 +17,7 @@ typedef struct _STabuleiro{
    Ponto tab[7][7]; // Tabuleiro
    int iA, jA; //Extremidades da cobra
    int iB, jB;
+   int nJogadas; // Conta o numero de jogadas executadas
 } Tabuleiro;
 
 void clearTab(Tabuleiro *tab); // Limpa o tabuleiro
