@@ -92,8 +92,37 @@ void printTabLetras(Tabuleiro tab){
 }
 
 typedef struct _SFB{
-	unsigned int height, widht;
-	char* burffer;
+	unsigned int height, width;
+	char* buffer;
 }Framebuffer;
 
-voi initFramebuffer(Framebuffer* fb, int h, int w)
+void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
+   if(fb->buffer){
+      free(fb->buffer);
+   }
+
+   fb->buffer = malloc(sizeof(char)*h*w);
+
+   fb->height = h;
+   fb->width = w;
+}
+
+void resizeFB(Framebuffer* fb, unsigned h, unsigned w){ // Redimensiona um framebuffer
+
+}
+
+Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight){ // Concatena framebuffers de mesma altura
+
+}
+
+void printFB(Framebuffer fb){ // Imprime framebuffer
+
+}
+
+Framebuffer printTab(Tabuleiro tab){ // Toma tab, e retorna sua representação grafica em um Framebuffer
+   
+}
+
+Framebuffer printTabWithHints(Tabuleiro tab){
+   Framebuffer fb = printTab(tab);
+}
