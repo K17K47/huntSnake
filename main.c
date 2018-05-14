@@ -22,6 +22,27 @@ int menu(){
    return out;
 }
 
+void msgStatus(int pontos, int jogador){
+   printf("%d pontos, vez do jogador ", pontos);
+   if(!jogador){
+      printf("1\n");
+   }else{
+      printf("2\n");
+   }
+   printf("Tecle 'q' para retornar ao menu principal\n");
+}
+
+void msgVitoria(int pontos, int jogador){
+   printf("Jogador ");
+   if(jogador){
+      printf(" 1 ");
+   }else{
+      printf(" 2 ");
+   }
+   printf("venceu com %d pontos\n", pontos);
+   printf("Tecle 'q' para retornar ao menu principal\n");
+}
+
 int main(){
    struct termios velhaConf, novaConf;
 
@@ -48,10 +69,12 @@ int main(){
          do{
             system("clear");
             printTabBasic(tab);
+            msgStatus(tab.nJogadas, jogador);
             usleep(600000); // 600ms de aguardo
 
             system("clear");
             printTabBasic(tab);
+            msgStatus(tab.nJogadas, jogador);
             usleep(200000); // 200ms de aguardo
 
             input = getchar();
@@ -110,6 +133,13 @@ int main(){
          }
 
       }while(!jogoTerminado(tab) && (input != 'q'));
+
+      if(jogoTerminado(tab)){
+         msgVitoria(tab.nJogadas, jogador);
+         do{
+            input = getchar();
+         }while(input!='q');
+      }
       tcsetattr(0, TCSANOW, &velhaConf);
    }
 
