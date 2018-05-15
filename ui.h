@@ -12,7 +12,6 @@ typedef struct _SFB{
    wchar_t* buffer;
 }Framebuffer;
 
-void printTabBasic(Tabuleiro tab); // Imprime tabuleiro
 void initFramebuffer(Framebuffer *fb, unsigned h, unsigned w);
 //void resizeFB(Framebuffer* fb, unsigned h, unsigned w);
 void printFB(Framebuffer fb);
