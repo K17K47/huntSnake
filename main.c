@@ -13,10 +13,13 @@ void menuPrincipal(){
    printf("\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 # A Cobra e o Caçador #\n\
+#                     #\n\
+#   By Gromit e Sasha #\n\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 \n\
   (1) Iniciar partida\n\
-      (2)  Sair\n");
+     (2) Créditos\n\
+      (3)  Sair\n");
 }
 
 void menuPartida(){
@@ -25,6 +28,8 @@ void menuPartida(){
    printf("\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 # A Cobra e o Caçador #\n\
+#                     #\n\
+#   By Gromit e Sasha #\n\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 \n\
     Tipo de partida:\n\
@@ -40,9 +45,27 @@ void menuWIP(){
    printf("\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 # A Cobra e o Caçador #\n\
+#                     #\n\
+#   By Gromit e Sasha #\n\
 +~~~~~~~~~~~~~~~~~~~~~+\n\
 \n\
  Item não implementado\n");
+}
+
+void creditos(){
+   system("clear");
+
+   printf("\
++~~~~~~~~~~~~~~~~~~~~~+\n\
+# A Cobra e o Caçador #\n\
+#                     #\n\
+#   By Gromit e Sasha #\n\
++~~~~~~~~~~~~~~~~~~~~~+\n\
+\n\
+Jogo escrito por:\n\
+\n\
+ Gromit - Vinícius Santos Barbosa\n\
+ Sasha  - Lucas Lopes Costa\n");
 }
 
 void msgStatus(int pontos, int jogador){
@@ -200,7 +223,7 @@ int main(){
          menuPrincipal();//Imprime o menu principal
          usleep(100000);
          input = getchar();
-      }while(input!= '1' && input !='2');
+      }while(input!= '1' && input !='2' && input!='3');
 
       if(input == '1'){// interpreta as opcoes do menu principal
          do{
@@ -279,6 +302,12 @@ int main(){
             case '3':// volta para o menu principal
                quit = 0;
                break;
+         }
+      }else if(input == '2'){
+         for(int i=10; i>=1; i--){
+            creditos();
+            printf("\n\nIndo ao menu principal em %d segundos\n", i);
+            sleep(1);
          }
       }else{
          quit = 1;
