@@ -5,6 +5,11 @@
 #include"ui.h"
 #include"aux.h"
 
+typedef struct _SFB{
+	unsigned int height, width;
+	wint_t* buffer;
+}Framebuffer;
+
 int simboloPonto = 0x262D;
 
 /*
@@ -58,48 +63,10 @@ void printTabBasic(Tabuleiro tab){
    }
 }
 
-	void VizinLivre( vetor, i, j);
-		for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
-			int k,l;
-			k = i;
-			j = l;
-			move(&k,&l,dir);
-			vetor[dir] = checkPointIsClear(tab,k,l);
-		}
-	void letras(Tabuleiro){
-		VizinLivre(int vetorLivre1[4], Tabuleiro.iA, Tabuleiro.jA);
-		VizinLivre(int vetorLivre2[4], Tabuleiro.iB, Tabuleiro.jB);
-		char vizinLetrado1[4],vizinLetrado2[4]
-		for( int k = 0; k<4; k++){
-			if(vetorLivre1[k]==1){
-				char letras1[4]={'a','b','c','d'};
-				vizinLetrado1[k]=letras1[k];
-			}
-			else{
-				vizinLetrado1[k]= ' ';
-			}
-			if(vetorLivre2[k]==1){
-				char letras2[4]={'e','f','g','h'};
-				vizinLetrado2[k]=letras2[k];
-			}
-			else{
-				vizinLetrado2[k]= ' ';
-			}
-		}
-	}
-void printTabLetras(Tabuleiro tab){
-	sprintf(printTabBasic,
-}
-
-typedef struct _SFB{
-	unsigned int height, width;
-	wint_t* buffer;
-}Framebuffer;
-
 void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
-   if(fb->buffer){
-      free(fb->buffer);
-   }
+   //if(fb->buffer){
+   //   free(fb->buffer);
+   //}
 
    fb->buffer = malloc(sizeof(char)*h*w);
 
@@ -107,22 +74,92 @@ void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
    fb->width = w;
 }
 
-void resizeFB(Framebuffer* fb, unsigned h, unsigned w){ // Redimensiona um framebuffer
+//void resizeFB(Framebuffer* fb, unsigned h, unsigned w){ // Redimensiona um framebuffer
 
-}
+//}
 
-Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight){ // Concatena framebuffers de mesma altura
+//Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight){ // Concatena framebuffers de mesma altura
 
-}
+//}
 
 void printFB(Framebuffer fb){ // Imprime framebuffer
+   setlocale(LC_ALL, "");
 
+   for(int i=0; i<fb.h; i++){
+      for(int j=0; j<fb.w; j++){
+         printf("%lc", fb.buffer[i*fb.w+j]);
+      }
+      printf("%lc", L'\n');
+   }
 }
 
-Framebuffer printTab(Tabuleiro tab){ // Toma tab, e retorna sua representação grafica em um Framebuffer
-   
+Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retorna sua representação grafica em um Framebuffer
+   wint_t ponto = 0x262D;
+
+   wint_t J1horiz = 0x2550;
+   wint_t J1vert = 0x2551;
+
+   wint_t J2horiz = 0x2501;
+   wint_t J2vert = 0x2503;
+
+   Framebuffer out;
+   initFramebuffer(&out, 7+6*DVert, 7+6*DHoriz);
+
+   for(int i=0; i<7; i++){
+      for(int j=0; j<7; j++){
+         out[i*(1+DVert)*out.w+j*(1+DHoriz)] = ponto;
+      }
+   }
+
+   for(int i=0; i<7; i++){
+      for(int j=0; j<7; j++){
+         if(j!=6){
+            Ponto p = tab.tab[i][j];
+
+            wint_t traco;
+
+            if(p.right == 0){
+               traco = L' ';
+            }else if(p.right == 1){
+               traco = J1Horiz;
+            }else if(p.right == 2){
+               traco = J2Horiz;
+            }
+
+            for(int k=0; k<DHoriz; k++){
+               out[i*(1+DVert)*out.w + j*(1+DHoriz) + k] = traco;
+            }
+         }
+      }
+      if(i!=6){
+         for(int j=0; j<7; j++){
+            Ponto p = tab.tab[i][j];
+
+            wint_t traco;
+
+            if(p.down == 0){
+               traco = L' ';
+            }else if(p.down == 1){
+               traco = J1Vert;
+            }else if(p.down == 2){
+               traco = J2Vert;
+            }
+
+            for(int k=0; k<DVert; k++){
+               out[i*(1+DVert+k)*out.w+j*(1+DHoriz)] = traco;
+               if(j!=6){
+                  for(int l=0; l<DHoriz; l++){
+                     out[i*(1+DVert+k)*out.w+j*(1+DHoriz)+l]=L' ';
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   return out;
 }
 
-Framebuffer printTabWithHints(Tabuleiro tab){
-   Framebuffer fb = printTab(tab);
-}
+//Framebuffer printTabWithHints(Tabuleiro tab){
+//   Framebuffer fb = printTab(tab);
+//}

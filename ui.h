@@ -10,10 +10,10 @@ typedef struct _SFB{
 
 void printTabBasic(Tabuleiro tab); // Imprime tabuleiro
 void initFramebuffer(Framebuffer *fb, unsigned h, unsigned w);
-void resizeFB(Framebuffer* fb, unsigned h, unsigned w);
+//void resizeFB(Framebuffer* fb, unsigned h, unsigned w);
 void printFB(Framebuffer fb);
-Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight);
-Framebuffer printTab(Tabuleiro tab);
-Framebuffer printTabWithHints(Tabuleiro tab);
+//Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight);
+Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert);
+//Framebuffer printTabWithHints(Tabuleiro tab);
 
 #endif
