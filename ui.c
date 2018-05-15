@@ -1,14 +1,7 @@
-#include<stdio.h>
-#include<locale.h>
-#include<wchar.h>
+#include<stdlib.h>
 
 #include"ui.h"
 #include"aux.h"
-
-typedef struct _SFB{
-	unsigned int height, width;
-	wint_t* buffer;
-}Framebuffer;
 
 int simboloPonto = 0x262D;
 
@@ -85,18 +78,18 @@ void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
 void printFB(Framebuffer fb){ // Imprime framebuffer
    setlocale(LC_ALL, "");
 
-   for(int i=0; i<fb.h; i++){
-      for(int j=0; j<fb.w; j++){
-         printf("%lc", fb.buffer[i*fb.w+j]);
+   for(int i=0; i<fb.height; i++){
+      for(int j=0; j<fb.width; j++){
+         printf("%lc", fb.buffer[i*fb.width+j]);
       }
       printf("%lc", L'\n');
    }
 }
 
-Framebuffer printTabWithHints(Tabuleiro tab){
-	Framebuffer fb = printTab(tab);
-	letras1 = {'w','d','s','a'};
-	letras2 = {'i','l','k','j'};
+Framebuffer printTabWithHints(Tabuleiro tab, int DHoriz, int DVert){
+	Framebuffer fb = printTab(tab, DHoriz, DVert);
+	wint_t letras1[] = {L'w',L'd',L's',L'a'};
+	wint_t letras2[] = {L'i',L'l',L'k',L'j'};
 	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
 		int i = tab.iA ; int j = tab.jA;
 		int k,l;
@@ -104,7 +97,7 @@ Framebuffer printTabWithHints(Tabuleiro tab){
 		l = j;
 		move(&k,&l,dir);
 		if(checkPointIsClear(tab,k,l)){
-			fb[k,l]=letras1[dir];
+			fb.buffer[k*(1+DVert)*fb.width+l*(1+DHoriz)]=letras1[dir];
 		}
 	}
 	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
@@ -114,7 +107,7 @@ Framebuffer printTabWithHints(Tabuleiro tab){
 		l = j;
 		move(&k,&l,dir);
 		if(checkPointIsClear(tab,k,l)){
-			fb[k,l]=letras2[dir];
+			fb.buffer[k*(1+DVert)*fb.width+l*(1+DHoriz)]=letras2[dir];
 		}
 	}
 	return(fb);
@@ -134,7 +127,7 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
 
    for(int i=0; i<7; i++){
       for(int j=0; j<7; j++){
-         out[i*(1+DVert)*out.w+j*(1+DHoriz)] = ponto;
+         out.buffer[i*(1+DVert)*out.width+j*(1+DHoriz)] = ponto;
       }
    }
 
@@ -148,13 +141,13 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
             if(p.right == 0){
                traco = L' ';
             }else if(p.right == 1){
-               traco = J1Horiz;
+               traco = J1horiz;
             }else if(p.right == 2){
-               traco = J2Horiz;
+               traco = J2horiz;
             }
 
             for(int k=0; k<DHoriz; k++){
-               out[i*(1+DVert)*out.w + j*(1+DHoriz) + k] = traco;
+               out.buffer[i*(1+DVert)*out.width + j*(1+DHoriz) + k] = traco;
             }
          }
       }
@@ -167,16 +160,16 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
             if(p.down == 0){
                traco = L' ';
             }else if(p.down == 1){
-               traco = J1Vert;
+               traco = J1vert;
             }else if(p.down == 2){
-               traco = J2Vert;
+               traco = J2vert;
             }
 
             for(int k=0; k<DVert; k++){
-               out[i*(1+DVert+k)*out.w+j*(1+DHoriz)] = traco;
+               out.buffer[i*(1+DVert+k)*out.width+j*(1+DHoriz)] = traco;
                if(j!=6){
                   for(int l=0; l<DHoriz; l++){
-                     out[i*(1+DVert+k)*out.w+j*(1+DHoriz)+l]=L' ';
+                     out.buffer[i*(1+DVert+k)*out.width+j*(1+DHoriz)+l]=L' ';
                   }
                }
             }

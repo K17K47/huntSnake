@@ -1,11 +1,15 @@
 #ifndef _UI_H
 #define _UI_H
 
+#include<stdio.h>
+#include<locale.h>
+#include<wchar.h>
+
 #include"aux.h"
 
 typedef struct _SFB{
    unsigned height, width;
-   char* buffer;
+   wint_t* buffer;
 }Framebuffer;
 
 void printTabBasic(Tabuleiro tab); // Imprime tabuleiro
