@@ -9,7 +9,7 @@
 
 typedef struct _SFB{
    unsigned height, width;
-   wint_t* buffer;
+   wchar_t* buffer;
 }Framebuffer;
 
 void printTabBasic(Tabuleiro tab); // Imprime tabuleiro

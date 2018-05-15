@@ -61,7 +61,11 @@ void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
    //   free(fb->buffer);
    //}
 
-   fb->buffer = malloc(sizeof(char)*h*w);
+   fb->buffer = malloc(sizeof(wchar_t)*h*w);
+
+   for(int i=0; i<h*w; i++){
+      fb->buffer[i] = L' ';
+   }
 
    fb->height = h;
    fb->width = w;
@@ -136,7 +140,7 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
          if(j!=6){
             Ponto p = tab.tab[i][j];
 
-            wint_t traco;
+            wchar_t traco;
 
             if(p.right == 0){
                traco = L' ';
@@ -146,7 +150,7 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
                traco = J2horiz;
             }
 
-            for(int k=0; k<DHoriz; k++){
+            for(int k=1; k<DHoriz+1; k++){
                out.buffer[i*(1+DVert)*out.width + j*(1+DHoriz) + k] = traco;
             }
          }
@@ -155,7 +159,7 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
          for(int j=0; j<7; j++){
             Ponto p = tab.tab[i][j];
 
-            wint_t traco;
+            wchar_t traco;
 
             if(p.down == 0){
                traco = L' ';
@@ -165,11 +169,11 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
                traco = J2vert;
             }
 
-            for(int k=0; k<DVert; k++){
-               out.buffer[i*(1+DVert+k)*out.width+j*(1+DHoriz)] = traco;
+            for(int k=1; k<DVert+1; k++){
+               out.buffer[(i*(1+DVert)+k)*out.width+j*(1+DHoriz)] = traco;
                if(j!=6){
-                  for(int l=0; l<DHoriz; l++){
-                     out.buffer[i*(1+DVert+k)*out.width+j*(1+DHoriz)+l]=L' ';
+                  for(int l=1; l<DHoriz+1; l++){
+                     out.buffer[(i*(1+DVert)+k)*out.width+j*(1+DHoriz)+l]=L' ';
                   }
                }
             }
