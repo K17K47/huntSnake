@@ -13,6 +13,7 @@ int simboloPonto = 0x262D;
 *              Vertical   - U+2503
 */
 
+//Aloca memoria para framebuffer, e inicializa suas propriedades
 void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
    //if(fb->buffer){
    //   free(fb->buffer);
@@ -47,21 +48,23 @@ void printFB(Framebuffer fb){ // Imprime framebuffer
    }
 }
 
+//Gera tabuleiro com dica de comandos para a jogada
 Framebuffer printTabWithHints(Tabuleiro tab, int DHoriz, int DVert){
-	Framebuffer fb = printTab(tab, DHoriz, DVert);
-	wint_t letras1[] = {L'W',L'D',L'S',L'A'};
-	wint_t letras2[] = {L'I',L'L',L'K',L'J'};
-	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
+	Framebuffer fb = printTab(tab, DHoriz, DVert);//Gera um tabuleiro basico, para poupar trabalho
+
+	wint_t letras1[] = {L'W',L'D',L'S',L'A'};//Teclas para ponta A
+	wint_t letras2[] = {L'I',L'L',L'K',L'J'};//Teclas para ponta B
+	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){//Procura casas livres ao redor da ponta A
 		int i = tab.iA ; int j = tab.jA;
 		int k,l;
 		k = i;
 		l = j;
 		move(&k,&l,dir);
-		if(checkPointIsClear(tab,k,l)){
+		if(checkPointIsClear(tab,k,l)){//e substitui pela letra da tecla correspondente para a jogada
 			fb.buffer[k*(1+DVert)*fb.width+l*(1+DHoriz)]=letras1[dir];
 		}
 	}
-	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
+	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){//loop similar ao acima, para a ponta B
 		int i = tab.iB ; int j = tab.jB;
 		int k,l;
 		k = i;
@@ -74,24 +77,31 @@ Framebuffer printTabWithHints(Tabuleiro tab, int DHoriz, int DVert){
 	return(fb);
 }
 
+//Gera um tabuleiro basico
 Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retorna sua representação grafica em um Framebuffer
-   wint_t ponto = 0x262D;
+   //Definicao dos caracteres usados no tabuleiro
+   //Atencao: Sao todos caracteres longos, Unicode
+   wint_t ponto = 0x262D;//Pontos do tabuleiro
 
-   wint_t J1horiz = 0x2550;
-   wint_t J1vert = 0x2551;
+   //Caracteres do jogador 1
+   wint_t J1horiz = 0x2550;//traco horizontal
+   wint_t J1vert = 0x2551;//traco vertical
 
-   wint_t J2horiz = 0x2501;
-   wint_t J2vert = 0x2503;
+   //Caracteres do jogador 2
+   wint_t J2horiz = 0x2501;//traco horizontal
+   wint_t J2vert = 0x2503;//traco vertical
 
    Framebuffer out;
-   initFramebuffer(&out, 7+6*DVert, 7+6*DHoriz);
+   initFramebuffer(&out, 7+6*DVert, 7+6*DHoriz);//Aloca um framebuffer
+   //para armazenar o tabuleiro
 
    for(int i=0; i<7; i++){
-      for(int j=0; j<7; j++){
+      for(int j=0; j<7; j++){//preenche com os pontos
          out.buffer[i*(1+DVert)*out.width+j*(1+DHoriz)] = ponto;
       }
    }
 
+   //preenche com os tracos ou espacos vazios
    for(int i=0; i<7; i++){
       for(int j=0; j<7; j++){
          if(j!=6){
@@ -107,7 +117,7 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
                traco = J2horiz;
             }
 
-            for(int k=1; k<DHoriz+1; k++){
+            for(int k=1; k<DHoriz+1; k++){//tracos horizontais
                out.buffer[i*(1+DVert)*out.width + j*(1+DHoriz) + k] = traco;
             }
          }
@@ -126,10 +136,10 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
                traco = J2vert;
             }
 
-            for(int k=1; k<DVert+1; k++){
+            for(int k=1; k<DVert+1; k++){//tracos verticais
                out.buffer[(i*(1+DVert)+k)*out.width+j*(1+DHoriz)] = traco;
                if(j!=6){
-                  for(int l=1; l<DHoriz+1; l++){
+                  for(int l=1; l<DHoriz+1; l++){//e espacos para alinhamento
                      out.buffer[(i*(1+DVert)+k)*out.width+j*(1+DHoriz)+l]=L' ';
                   }
                }
@@ -138,5 +148,5 @@ Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert){ // Toma tab, e retor
       }
    }
 
-   return out;
+   return out;//retorna o framebuffer resultante
 }

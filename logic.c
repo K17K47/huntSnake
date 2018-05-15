@@ -2,12 +2,13 @@
 #include"aux.h"
 
 int jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
+   // testa se jogada é possivel, e se sim, escreve no tabuleiro a respectiva jogada
    int i,j;
 
-   if(!ponta){ // Ponta A
+   if(!ponta){ // Ponta A(W,A,S,D)
       i = tab->iA;
       j = tab->jA;
-   }else{ // Ponta B
+   }else{ // Ponta B(I,J,K,L)
       i = tab->iB;
       j = tab->jB;
    }
@@ -17,10 +18,11 @@ int jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
    l = j;
    move(&k, &l, dir);
 
-   if(!checkPointIsClear(*tab, k, l)){
-      return 0;
+   if(!checkPointIsClear(*tab, k, l)){//Checa se a direcao da jogada
+      return 0;//esta desimpedida
    }
 
+   //classifica e escreve a jogada
    if((dir == DIR_BAIXO)||(dir == DIR_DIR)){
       if(dir == DIR_DIR)
          tab->tab[i][j].right = jogador;
@@ -46,7 +48,7 @@ int jogada(Tabuleiro* tab, int ponta, int jogador, Direcao dir){
    return 1;
 }
 
-int jogoTerminado(Tabuleiro tab){
+int jogoTerminado(Tabuleiro tab){//testa se existe alguma jogada possivel
    int i, j;
 
    for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
@@ -72,6 +74,6 @@ int jogoTerminado(Tabuleiro tab){
    return 1;
 }
 
-int pontos(Tabuleiro tab){
+int pontos(Tabuleiro tab){//retorna o contador de pontos(TODO: remover, é futil)
    return tab.nJogadas;
 }
