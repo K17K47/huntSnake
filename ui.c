@@ -58,39 +58,6 @@ void printTabBasic(Tabuleiro tab){
    }
 }
 
-	void VizinLivre( vetor, i, j);
-		for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
-			int k,l;
-			k = i;
-			j = l;
-			move(&k,&l,dir);
-			vetor[dir] = checkPointIsClear(tab,k,l);
-		}
-	void letras(Tabuleiro){
-		VizinLivre(int vetorLivre1[4], Tabuleiro.iA, Tabuleiro.jA);
-		VizinLivre(int vetorLivre2[4], Tabuleiro.iB, Tabuleiro.jB);
-		char vizinLetrado1[4],vizinLetrado2[4]
-		for( int k = 0; k<4; k++){
-			if(vetorLivre1[k]==1){
-				char letras1[4]={'a','b','c','d'};
-				vizinLetrado1[k]=letras1[k];
-			}
-			else{
-				vizinLetrado1[k]= ' ';
-			}
-			if(vetorLivre2[k]==1){
-				char letras2[4]={'e','f','g','h'};
-				vizinLetrado2[k]=letras2[k];
-			}
-			else{
-				vizinLetrado2[k]= ' ';
-			}
-		}
-	}
-void printTabLetras(Tabuleiro tab){
-	sprintf(printTabBasic,
-}
-
 typedef struct _SFB{
 	unsigned int height, width;
 	char* buffer;
@@ -120,9 +87,32 @@ void printFB(Framebuffer fb){ // Imprime framebuffer
 }
 
 Framebuffer printTab(Tabuleiro tab){ // Toma tab, e retorna sua representação grafica em um Framebuffer
-   
+
 }
 
 Framebuffer printTabWithHints(Tabuleiro tab){
-   Framebuffer fb = printTab(tab);
+	Framebuffer fb = printTab(tab);
+	letras1 = {'w','d','s','a'};
+	letras2 = {'i','l','k','j'};
+	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
+		int i = tab.iA ; int j = tab.jA;
+		int k,l;
+		k = i;
+		l = j;
+		move(&k,&l,dir);
+		if(checkPointIsClear(tab,k,l)){
+			fb[k,l]=letras1[dir];
+		}
+	}
+	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
+		int i = tab.iB ; int j = tab.jB;
+		int k,l;
+		k = i;
+		l = j;
+		move(&k,&l,dir);
+		if(checkPointIsClear(tab,k,l)){
+			fb[k,l]=letras2[dir];
+		}
+	}
+	return(fb);
 }
