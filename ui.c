@@ -92,8 +92,8 @@ void printFB(Framebuffer fb){ // Imprime framebuffer
 
 Framebuffer printTabWithHints(Tabuleiro tab, int DHoriz, int DVert){
 	Framebuffer fb = printTab(tab, DHoriz, DVert);
-	wint_t letras1[] = {L'w',L'd',L's',L'a'};
-	wint_t letras2[] = {L'i',L'l',L'k',L'j'};
+	wint_t letras1[] = {L'W',L'D',L'S',L'A'};
+	wint_t letras2[] = {L'I',L'L',L'K',L'J'};
 	for(Direcao dir=DIR_CIMA; dir<=DIR_ESQ; dir++){
 		int i = tab.iA ; int j = tab.jA;
 		int k,l;
