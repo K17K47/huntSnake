@@ -65,15 +65,19 @@ int main(){
 
       do{
          Direcao dir;
+         Framebuffer tabBasico, tabLetras;
+
+         tabBasico = printTab(tab, 2, 1);
+         tabLetras = printTabWithHints(tab, 2, 1);
 
          do{
             system("clear");
-            printTabBasic(tab);
+            printFB(tabLetras);
             msgStatus(tab.nJogadas, jogador);
             usleep(600000); // 600ms de aguardo
 
             system("clear");
-            printTabBasic(tab);
+            printFB(tabBasico);
             msgStatus(tab.nJogadas, jogador);
             usleep(200000); // 200ms de aguardo
 
@@ -85,6 +89,9 @@ int main(){
                break;
             }
          }while(1);
+
+         free(tabBasico.buffer);
+         free(tabLetras.buffer);
 
          if(input != 'q'){
             int ponta;
