@@ -100,16 +100,47 @@ void msgVitoria(int p1, int p2){
    }
 }
 
+Framebuffer helpBox(int Dhoriz, int Dvert){
+   Framebuffer out;
+   int H, W;
+   H = 6*Dvert+7;
+   W = 80-(7+Dhoriz*6);
+
+   initFramebuffer(&out, H, W);
+
+   swprintf(&out.buffer[ 0  ], 40, L"   | As teclas W, A, S, D e I, J, K, L");
+   swprintf(&out.buffer[ W  ], 40, L"   | controlam as pontas da cobra:");
+   swprintf(&out.buffer[2*W ], 40, L"   | ");
+   swprintf(&out.buffer[3*W ], 40, L"   |             W     I");
+   swprintf(&out.buffer[4*W ], 40, L"   |             %lc     %lc", (wchar_t)0x25B2, (wchar_t)0x25B3);
+   swprintf(&out.buffer[5*W ], 40, L"   |           A%lc%lc%lcD J%lc%lc%lcL", (wchar_t)0x25C0, (wchar_t)0x25CF, (wchar_t)0x25B6, (wchar_t)0x25C1, (wchar_t)0x25CB, (wchar_t)0x25B7);
+   swprintf(&out.buffer[6*W ], 40, L"   |             %lc     %lc", (wchar_t)0x25BC, (wchar_t)0x25BD);
+   swprintf(&out.buffer[7*W ], 40, L"   |             S     K");
+   swprintf(&out.buffer[8*W ], 40, L"   | ");
+   swprintf(&out.buffer[9*W ], 40, L"   | O objetivo é traçar a cobra mais");
+   swprintf(&out.buffer[10*W], 40, L"   | longa. O turno termina quando não");
+   swprintf(&out.buffer[11*W], 40, L"   | há jogadas possíveis. A pontuação");
+   swprintf(&out.buffer[12*W], 40, L"   | é proporcional ao comprimento.");
+   return out;
+}
+
 int loopPartida(Tabuleiro tab, int jogador){ // Loop principal do jogo
    // Toma um tabuleiro com a coordenada inicial inicializada, e o primeiro jogador da rodada
    char input;
 
    do{
       Direcao dir;
-      Framebuffer tabBasico, tabLetras;
+      Framebuffer tabBasico, tabLetras, box, tmp;
 
-      tabBasico = printTab(tab, 2, 1); //Gera o framebuffer com o tabuleiro simples
-      tabLetras = printTabWithHints(tab, 2, 1); //Gera o framebuffer com a dica de teclas de jogada
+      box = helpBox(2, 1);
+
+      tmp = printTab(tab, 2, 1); //Gera o framebuffer com o tabuleiro simples
+      tabBasico = horizConcat(tmp, box);
+      free(tmp.buffer);
+
+      tmp = printTabWithHints(tab, 2, 1); //Gera o framebuffer com a dica de teclas de jogada
+      tabLetras = horizConcat(tmp, box);
+      free(tmp.buffer);
 
       do{
          system("clear");
