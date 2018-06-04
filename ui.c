@@ -42,7 +42,7 @@ Framebuffer horizConcat(Framebuffer fbLeft, Framebuffer fbRight){ // Concatena f
          out.buffer[i*out.width+j] = fbLeft.buffer[i*fbLeft.width+j];
       }
       for(int j=0; j<fbRight.width; j++){
-         out.buffer[i*out.width+fbLeft.width+j] = fbRight.buffer[i*fbRight+j];
+         out.buffer[i*out.width+fbLeft.width+j] = fbRight.buffer[i*fbRight.width+j];
       }
    }
 
