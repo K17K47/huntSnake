@@ -33,9 +33,21 @@ void initFramebuffer(Framebuffer* fb, unsigned h, unsigned w){
 
 //}
 
-//Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight){ // Concatena framebuffers de mesma altura
+Framebuffer horizConcat(Framebuffer fbLeft, Framebuffer fbRight){ // Concatena framebuffers de mesma altura
+   Framebuffer out;
+   initFramebuffer(&out, fbLeft.height, fbLeft.width+fbRight.width);
 
-//}
+   for(int i=0; i<out.height; i++){
+      for(int j=0; j<fbLeft.width; j++){
+         out.buffer[i*out.width+j] = fbLeft.buffer[i*fbLeft.width+j];
+      }
+      for(int j=0; j<fbRight.width; j++){
+         out.buffer[i*out.width+fbLeft.width+j] = fbRight.buffer[i*fbRight+j];
+      }
+   }
+
+   return out;
+}
 
 void printFB(Framebuffer fb){ // Imprime framebuffer
    setlocale(LC_ALL, "");

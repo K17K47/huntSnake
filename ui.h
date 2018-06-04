@@ -15,7 +15,7 @@ typedef struct _SFB{
 void initFramebuffer(Framebuffer *fb, unsigned h, unsigned w);
 //void resizeFB(Framebuffer* fb, unsigned h, unsigned w);
 void printFB(Framebuffer fb);
-//Framebuffer horizConcat(Framebuffer* fbLeft, Framebuffer* fbRight);
+Framebuffer horizConcat(Framebuffer fbLeft, Framebuffer fbRight);
 Framebuffer printTab(Tabuleiro tab, int DHoriz, int DVert);
 Framebuffer printTabWithHints(Tabuleiro tab, int DHoriz, int DVert);
 
