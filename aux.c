@@ -34,6 +34,20 @@ void move(int *i, int *j, Direcao dir){ // Calcula ponto após movimento em uma 
    }
 }
 
+void decodificaJogada(char input, Direcao* dir, int* ponta){
+   char dict[2][4] = {{'w','d','s','a'},{'i','l','k','j'}};
+
+   for(int i=0; i<2; i++){
+      for(Direcao j = DIR_CIMA; j<=DIR_ESQ; j++){
+         if(input == dict[i][j]){
+            *ponta = i;
+            *dir = j;
+            break;
+         }
+      }
+   }
+}
+
 int checkBorder(int i, int j){   // Checa se coordenada está dentro do tabuleiro
    return (0 <= i && i < 7) && (0 <= j && j < 7);
 }

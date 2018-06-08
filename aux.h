@@ -21,8 +21,13 @@ typedef struct _STabuleiro{
 } Tabuleiro;
 
 void clearTab(Tabuleiro *tab); // Limpa o tabuleiro
+
 void move(int *i, int *j, Direcao dir); // Calcula ponto após movimento em uma direção
 int checkBorder(int i, int j); // Checa se coordenada está dentro do tabuleiro
 int checkPointIsClear(Tabuleiro tab, int i, int j); // Checa se o ponto não tem obstrução/já foi navegado
+
+void decodificaJogada(char input, Direcao* dir, int* ponta); // Decodifica a tecla entrada em na ponta desejada, e na direcao desejada
+// w,a,s,d -> Ponta 0, i,j,k,l -> Ponta 1
+// w,i -> Cima, a,j -> Esquerda, s,k -> Baixo, d,l -> Direita
 
 #endif
