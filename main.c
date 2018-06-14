@@ -7,6 +7,7 @@
 #include"menus.h"
 
 #include"logic.h"
+#include"ai.h"
 #include"aux.h"
 
 int loopPartida(Tabuleiro tab, int jogador){ // Loop principal do jogo
@@ -83,7 +84,7 @@ int loopPartida(Tabuleiro tab, int jogador){ // Loop principal do jogo
    return tab.nJogadas;
 }
 
-int rodada(Tabuleiro* tab, int jogador){
+void inicializaTabuleiro(Tabuleiro* tab, int jogador){
    char input = 0;
 
    clearTab(tab);
@@ -112,8 +113,6 @@ int rodada(Tabuleiro* tab, int jogador){
 
    tab->jA = input-'0';
    tab->jB = tab->jA;
-
-   return loopPartida(*tab, jogador);
 }
 
 int main(){
@@ -151,11 +150,13 @@ int main(){
          switch(input){//interpreta as opcoes do menu de partida
             case '1': //Partida entre humanos
 
-               p1 = rodada(&tab ,0); //abre a primeira rodada
+               inicializaTabuleiro(&tab, 0);
+               p1 = loopPartida(tab ,0); //abre a primeira rodada
                if(!p1)//zero pontos é ragequit
                   break;
 
-               p2 = rodada(&tab, 1);//abre a segunda rodada
+               inicializaTabuleiro(&tab, 1);
+               p2 = loopPartida(tab, 1);//abre a segunda rodada
                if(!p2)//zero pontos é quitão
                   break;
 
@@ -166,8 +167,20 @@ int main(){
                }
                break;
             case '2'://opcao de humano contra computador
+               inicializaTabuleiro(&tab, 0); // Humano dá coordenadas iniciais
+               p1 = rodadaComputador(&tab, 0); // Computador é caçador
+
+               if(!p1)
+                  break;
+
+               computadorInicializa(&tab); // Computador dá coordenadas iniciais
+               p2 = rodadaComputador(&tab, 1); // Computador é cobra
+
+               if(!p2)
+                  break;
+
                for(int i =5; i>=1; i--){
-                  menuWIP();
+                  msgVitoria(p1, p2);
                   printf("Indo ao menu principal em %d segundos\n", i);
                   sleep(1);
                }
