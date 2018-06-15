@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<termios.h>
 #include<unistd.h>
+#include<time.h>
 
 #include"ui.h"
 #include"menus.h"
@@ -11,9 +12,11 @@
 #include"aux.h"
 
 void turnoHumano(Tabuleiro tab, int jogador, char* input){
-   Framebuffer tabBasico, tabLetras, box, tmp;
+	// Captura entrada, imprime interface, realiza jogadas
 
-   box = helpBox(2, 1);
+	Framebuffer tabBasico, tabLetras, box, tmp;
+
+   box = helpBox(2, 1);	// Gera o framebuffer com a caixa lateral de ajuda
 
    tmp = printTab(tab, 2, 1); //Gera o framebuffer com o tabuleiro simples
    tabBasico = horizConcat(tmp, box);
@@ -61,7 +64,9 @@ int loopPartida(Tabuleiro tab, int jogador, int ia){ // Loop principal do jogo
       if( !ia || !jogador ){
          turnoHumano(tab, jogador, &input);
       }else{
-         turnoComputador(tab, ia-1, &input);
+         turnoComputador(tab, ia-1, &input);	// Chama funcao da IA
+			// Se ia = 1, computador joga como caçador
+			// Se ia = 2, computador joga como cobra
       }
 
       if(input != 'q'){ //Caso nao seja a opção de sair
@@ -129,6 +134,8 @@ void humanoInicializa(Tabuleiro* tab, int jogador){
 }
 
 int main(){
+	srand(time(NULL));	// Inicializa gerador de numeros aleatorios
+
    struct termios velhaConf, novaConf;
 
    tcgetattr(0, &novaConf); //Fazemos copia da configuracao do terminal
