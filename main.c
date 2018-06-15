@@ -10,46 +10,59 @@
 #include"ai.h"
 #include"aux.h"
 
-int loopPartida(Tabuleiro tab, int jogador){ // Loop principal do jogo
+void turnoHumano(Tabuleiro tab, int jogador, char* input){
+   Framebuffer tabBasico, tabLetras, box, tmp;
+
+   box = helpBox(2, 1);
+
+   tmp = printTab(tab, 2, 1); //Gera o framebuffer com o tabuleiro simples
+   tabBasico = horizConcat(tmp, box);
+   free(tmp.buffer);
+
+   tmp = printTabWithHints(tab, 2, 1); //Gera o framebuffer com a dica de teclas de jogada
+   tabLetras = horizConcat(tmp, box);
+   free(tmp.buffer);
+
+   do{
+      system("clear");
+      printFB(tabLetras);  //Imprime o tabuleiro com dicas
+      msgStatus(tab.nJogadas, jogador); //e a mensagem de status
+      usleep(600000); // 600ms de aguardo
+
+      system("clear");
+      printFB(tabBasico);  //Imprime o tabuleiro simples
+      msgStatus(tab.nJogadas, jogador);
+      usleep(200000); // 200ms de aguardo
+
+      *input = getchar(); //Captura a entrada
+
+      if(*input == 'a' || *input == 's' || *input == 'd' ||
+         *input == 'w' || *input == 'j' || *input == 'k' ||
+         *input == 'l' || *input == 'i' || *input == 'q'){
+         break; // Se for comando valido, responde. Senao, ignora e continua o loop
+      }
+   }while(1);
+
+   free(tabBasico.buffer); //Dealoca a memoria usada para
+   free(tabLetras.buffer); //desenhar os tabuleiros
+}
+
+int loopPartida(Tabuleiro tab, int jogador, int ia){ // Loop principal do jogo
    // Toma um tabuleiro com a coordenada inicial inicializada, e o primeiro jogador da rodada
    char input;
 
+   if(ia){
+      ia+=jogador;
+   }
+
    do{
       Direcao dir;
-      Framebuffer tabBasico, tabLetras, box, tmp;
 
-      box = helpBox(2, 1);
-
-      tmp = printTab(tab, 2, 1); //Gera o framebuffer com o tabuleiro simples
-      tabBasico = horizConcat(tmp, box);
-      free(tmp.buffer);
-
-      tmp = printTabWithHints(tab, 2, 1); //Gera o framebuffer com a dica de teclas de jogada
-      tabLetras = horizConcat(tmp, box);
-      free(tmp.buffer);
-
-      do{
-         system("clear");
-         printFB(tabLetras);  //Imprime o tabuleiro com dicas
-         msgStatus(tab.nJogadas, jogador); //e a mensagem de status
-         usleep(600000); // 600ms de aguardo
-
-         system("clear");
-         printFB(tabBasico);  //Imprime o tabuleiro simples
-         msgStatus(tab.nJogadas, jogador);
-         usleep(200000); // 200ms de aguardo
-
-         input = getchar(); //Captura a entrada
-
-         if(input == 'a' || input == 's' || input == 'd' ||
-            input == 'w' || input == 'j' || input == 'k' ||
-            input == 'l' || input == 'i' || input == 'q'){
-            break; // Se for comando valido, responde. Senao, ignora e continua o loop
-         }
-      }while(1);
-
-      free(tabBasico.buffer); //Dealoca a memoria usada para
-      free(tabLetras.buffer); //desenhar os tabuleiros
+      if( !ia || !jogador ){
+         turnoHumano(tab, jogador, &input);
+      }else{
+         turnoComputador(tab, ia-1, &input);
+      }
 
       if(input != 'q'){ //Caso nao seja a opção de sair
          int ponta; // interpreta a direção da jogada
@@ -84,7 +97,7 @@ int loopPartida(Tabuleiro tab, int jogador){ // Loop principal do jogo
    return tab.nJogadas;
 }
 
-void inicializaTabuleiro(Tabuleiro* tab, int jogador){
+void humanoInicializa(Tabuleiro* tab, int jogador){
    char input = 0;
 
    clearTab(tab);
@@ -150,13 +163,13 @@ int main(){
          switch(input){//interpreta as opcoes do menu de partida
             case '1': //Partida entre humanos
 
-               inicializaTabuleiro(&tab, 0);
-               p1 = loopPartida(tab ,0); //abre a primeira rodada
+               humanoInicializa(&tab, 0);
+               p1 = loopPartida(tab, 0, 0); //abre a primeira rodada
                if(!p1)//zero pontos é ragequit
                   break;
 
-               inicializaTabuleiro(&tab, 1);
-               p2 = loopPartida(tab, 1);//abre a segunda rodada
+               humanoInicializa(&tab, 1);
+               p2 = loopPartida(tab, 1, 0);//abre a segunda rodada
                if(!p2)//zero pontos é quitão
                   break;
 
@@ -167,14 +180,14 @@ int main(){
                }
                break;
             case '2'://opcao de humano contra computador
-               inicializaTabuleiro(&tab, 0); // Humano dá coordenadas iniciais
-               p1 = rodadaComputador(&tab, 0); // Computador é caçador
+               humanoInicializa(&tab, 0); // Humano dá coordenadas iniciais
+               p1 = loopPartida(tab, 0, 1); // Computador é caçador
 
                if(!p1)
                   break;
 
                computadorInicializa(&tab); // Computador dá coordenadas iniciais
-               p2 = rodadaComputador(&tab, 1); // Computador é cobra
+               p2 = loopPartida(tab, 1, 1); // Computador é cobra
 
                if(!p2)
                   break;
